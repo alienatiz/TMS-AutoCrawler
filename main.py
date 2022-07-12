@@ -18,13 +18,17 @@ filePath = "./TMS데이터"
 ft_name = ""
 stackCode = ['1', '123', '132', '15', '153', '154', '155', '156', '16', '17', '18', '2', '20', '24', '25',
              '26', '27', '28', '29', '3', '30', '31', '32', '45', '47', '49', '51', '52', '53', '54', '92', '93']
-dataList = []
-mergedList = []
 
 
 # Feature: Crawling
 def crawling():
     global todayDate, ft_name
+    
+    # Problem: When DataFrame is saved to .csv file, the next list was appended at previous list. 
+    # Then .csv file has the bigger file size.
+    # 
+    # Workaround: Initialize dataList
+    dataList = []
     for i in range(len(stackCode)):
         queryParams = '?' + urlencode(
             {
@@ -94,7 +98,8 @@ def crawling():
               index=False,
               header=True,
               line_terminator="\n",
-              encoding='utf-8-sig')
+              encoding='utf-8-sig',
+              mode='w')
 
 
 # Crawled every 25 minutes
