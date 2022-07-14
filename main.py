@@ -20,15 +20,16 @@ stackCode = ['1', '123', '132', '15', '153', '154', '155', '156', '16', '17', '1
 
 # Feature: Crawling
 def crawling():
+    global todayDate, factoryName, measureDate
     saveDate = dt.datetime.now().strftime('%H-%M-%S')
     executeDate = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    global todayDate, factoryName, measureDate
     
     # Problem: When DataFrame is saved to .csv file, the next list was appended at previous list. 
     # Then .csv file has the bigger file size.
     # 
     # Workaround: Initialize dataList
     dataList = []
+    
     for i in range(len(stackCode)):
         queryParams = '?' + urlencode(
             {
@@ -45,36 +46,43 @@ def crawling():
         # This code is for debugging
         print("Exhaust connected successfully: #" + str(stackCode[i]))
         xmlObj = bs4.BeautifulSoup(result, 'lxml-xml')
-
         data = xmlObj.find_all('item')
+        
+        # Added exception handling when an ConnectionError is occurred
+        try:
+            for k in range(len(data)):
+                mesure_dt = data[k].mesure_dt.string.strip()
+                area_nm = data[k].area_nm.string.strip()
+                fact_manage_nm = data[k].fact_manage_nm.string.strip()
+                stack_code = data[k].stack_code.string
+                nh3_exhst_perm_stdr_value = data[k].nh3_exhst_perm_stdr_value.string
+                nh3_mesure_value = data[k].nh3_mesure_value.string
+                nox_exhst_perm_stdr_value = data[k].nox_exhst_perm_stdr_value.string
+                nox_mesure_value = data[k].nox_mesure_value.string
+                sox_exhst_perm_stdr_value = data[k].sox_exhst_perm_stdr_value.string
+                sox_mesure_value = data[k].sox_mesure_value.string
+                tsp_exhst_perm_stdr_value = data[k].tsp_exhst_perm_stdr_value.string
+                tsp_mesure_value = data[k].tsp_mesure_value.string
+                hf_exhst_perm_stdr_value = data[k].hf_exhst_perm_stdr_value.string
+                hf_mesure_value = data[k].hf_mesure_value.string
+                hcl_exhst_perm_stdr_value = data[k].hcl_exhst_perm_stdr_value.string
+                hcl_mesure_value = data[k].hcl_mesure_value.string
+                co_exhst_perm_stdr_value = data[k].co_exhst_perm_stdr_value.string
+                co_mesure_value = data[k].co_mesure_value.string
 
-        for k in range(len(data)):
-            mesure_dt = data[k].mesure_dt.string.strip()
-            area_nm = data[k].area_nm.string.strip()
-            fact_manage_nm = data[k].fact_manage_nm.string.strip()
-            stack_code = data[k].stack_code.string
-            nh3_exhst_perm_stdr_value = data[k].nh3_exhst_perm_stdr_value.string
-            nh3_mesure_value = data[k].nh3_mesure_value.string
-            nox_exhst_perm_stdr_value = data[k].nox_exhst_perm_stdr_value.string
-            nox_mesure_value = data[k].nox_mesure_value.string
-            sox_exhst_perm_stdr_value = data[k].sox_exhst_perm_stdr_value.string
-            sox_mesure_value = data[k].sox_mesure_value.string
-            tsp_exhst_perm_stdr_value = data[k].tsp_exhst_perm_stdr_value.string
-            tsp_mesure_value = data[k].tsp_mesure_value.string
-            hf_exhst_perm_stdr_value = data[k].hf_exhst_perm_stdr_value.string
-            hf_mesure_value = data[k].hf_mesure_value.string
-            hcl_exhst_perm_stdr_value = data[k].hcl_exhst_perm_stdr_value.string
-            hcl_mesure_value = data[k].hcl_mesure_value.string
-            co_exhst_perm_stdr_value = data[k].co_exhst_perm_stdr_value.string
-            co_mesure_value = data[k].co_mesure_value.string
+                data = [mesure_dt, area_nm, fact_manage_nm, stack_code, nh3_exhst_perm_stdr_value, nh3_mesure_value,
+                        nox_exhst_perm_stdr_value, nox_mesure_value, sox_exhst_perm_stdr_value, sox_mesure_value,
+                        tsp_exhst_perm_stdr_value, tsp_mesure_value, hf_exhst_perm_stdr_value, hf_mesure_value,
+                        hcl_exhst_perm_stdr_value, hcl_mesure_value, co_exhst_perm_stdr_value, co_mesure_value]
+                measureDate = mesure_dt.replace(":", "-")
+                factoryName = fact_manage_nm
+                dataList.append(data)
 
-            data = [mesure_dt, area_nm, fact_manage_nm, stack_code, nh3_exhst_perm_stdr_value, nh3_mesure_value,
-                    nox_exhst_perm_stdr_value, nox_mesure_value, sox_exhst_perm_stdr_value, sox_mesure_value,
-                    tsp_exhst_perm_stdr_value, tsp_mesure_value, hf_exhst_perm_stdr_value, hf_mesure_value,
-                    hcl_exhst_perm_stdr_value, hcl_mesure_value, co_exhst_perm_stdr_value, co_mesure_value]
-            measureDate = mesure_dt.replace(":", "-")
-            factoryName = fact_manage_nm
-            dataList.append(data)
+        except ConnectionError as e:
+            print(e, "\nConnectionError is occurred. It will be restarted soon.")
+            time.sleep(10)
+            crawling()
+            return
   
     print("\nChecking the measure date: ", measureDate)
     print("\nExecuted: data -> df(DataFrame)")
