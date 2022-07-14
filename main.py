@@ -113,11 +113,25 @@ def crawling():
     print("Completed: Saved successfully", str(saveDate.replace("-", ":")))
 
 
-print("AutoCrawler is starting...")
+def show_rerunning_time():
+    rerunningTime = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print("\nRe-Running time: " + rerunningTime)
 
 
-# Crawled every 30 minutes
-schedule.every(30).minutes.do(crawling, "\nAutoCrawler is running...")
+# First running
+print("------------------------------")
+print("# AutoCrawler is starting... #")
+print("------------------------------")
+crawling()
+
+# Automation - to set time to re-run
+# 15 minutes every hour
+schedule.every().hour.at(":15").do(show_rerunning_time)
+schedule.every().hour.at(":15").do(crawling)
+
+# 45 minutes every hour
+schedule.every().hour.at(":45").do(show_rerunning_time)
+schedule.every().hour.at(":45").do(crawling)
 
 while True:
     schedule.run_pending()
