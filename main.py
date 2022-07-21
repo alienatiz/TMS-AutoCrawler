@@ -11,7 +11,7 @@ import schedule
 url = "http://apis.data.go.kr/B552584/cleansys/rltmMesureResult"
 api_key = unquote('')
 todayDate = ""
-filePath = "./TMS데이터"
+filePath = "./TMS_data"
 factoryName = ""
 measureTime = ""
 stackCode = ['1', '123', '132', '15', '153', '154', '155', '156', '16', '17', '18', '2', '20', '24', '25',
