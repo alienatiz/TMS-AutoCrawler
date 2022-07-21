@@ -1,5 +1,6 @@
 import datetime as dt
 import time
+from urllib.error import URLError, HTTPError
 from urllib.parse import urlencode, quote_plus, unquote
 from urllib.request import urlopen
 
