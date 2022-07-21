@@ -13,16 +13,16 @@ api_key = unquote('')
 todayDate = ""
 filePath = "./TMS데이터"
 factoryName = ""
-measureDate = ""
+measureTime = ""
 stackCode = ['1', '123', '132', '15', '153', '154', '155', '156', '16', '17', '18', '2', '20', '24', '25',
              '26', '27', '28', '29', '3', '30', '31', '32', '45', '47', '49', '51', '52', '53', '54', '92', '93']
 
 
 # Feature: Crawling
 def crawling():
-    global todayDate, factoryName, measureDate
-    saveDate = dt.datetime.now().strftime('%H-%M-%S')
-    executeDate = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    global todayDate, factoryName, measureTime
+    executeTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+    saveTime = dt.datetime.now().strftime('%H-%M-%S')
     
     # Problem: When DataFrame is saved to .csv file, the next list was appended at previous list. 
     # Then .csv file has the bigger file size.
@@ -74,7 +74,7 @@ def crawling():
                         nox_exhst_perm_stdr_value, nox_mesure_value, sox_exhst_perm_stdr_value, sox_mesure_value,
                         tsp_exhst_perm_stdr_value, tsp_mesure_value, hf_exhst_perm_stdr_value, hf_mesure_value,
                         hcl_exhst_perm_stdr_value, hcl_mesure_value, co_exhst_perm_stdr_value, co_mesure_value]
-                measureDate = mesure_dt.replace(":", "-")
+                measureTime = mesure_dt.replace(":", "-")
                 factoryName = fact_manage_nm
                 dataList.append(data)
 
@@ -108,7 +108,7 @@ def crawling():
             crawling()
             return
   
-    print("\nChecking the measure date: ", measureDate)
+    print("\nChecking the measure date: ", measureTime)
     print("\nExecuted: data -> df(DataFrame)")
 
     df = pd.DataFrame(dataList, columns=['측정시간', '지역명', '사업장명', '배출구', '암모니아_허용기준', '암모니아_측정값',
@@ -120,7 +120,7 @@ def crawling():
     print("\nChecking: The length of df row/col: " + str(df.shape[0]) + " rows/" + str(df.shape[1]) + " cols")
     print("Checking: The contents of df: \n", df)
 
-    fileName = str(factoryName) + " " + str(measureDate) + " " + saveDate
+    fileName = str(factoryName) + " " + str(measureTime) + " " + saveTime
 
     print("\nExecuted: df(DataFrame) -> .csv")
     df.to_csv(fileName + ".csv",
@@ -134,7 +134,7 @@ def crawling():
               mode='w')
     
     print("Completed: df(DataFrame) -> " + fileName + ".csv")
-    print("Completed: Saved successfully", str(saveDate.replace("-", ":")))
+    print("Completed: Saved successfully", str(saveTime.replace("-", ":")))
 
 
 def show_rerunning_time():
