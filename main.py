@@ -41,7 +41,7 @@ def crawling():
             }
         )
         
-        # Added exception handling when an ConnectionError is occurred
+        # Fix the problem that couldn't retry to get data.
         try:
             result = urlopen(url + queryParams)
             
@@ -78,9 +78,33 @@ def crawling():
                 factoryName = fact_manage_nm
                 dataList.append(data)
 
+                
+        # HTTPError should be declared at first.
+        except HTTPError as e:
+            print('error code: ', e.code)
+            print(e, '\nConnectionError is occurred. It will be restarted soon.')
+            time.sleep(15)
+            crawling()
+            return
+
         except ConnectionError as e:
-            print(e, "\nConnectionError is occurred. It will be restarted soon.")
-            time.sleep(10)
+            print(e, '\nConnectionError is occurred. It will be restarted soon.')
+            print('Reason: ', e)
+            time.sleep(15)
+            crawling()
+            return
+
+        except TimeoutError as e:
+            print('\nTimeoutError is occurred. Failed to get the request.')
+            print('Reason: ', e)
+            time.sleep(15)
+            crawling()
+            return
+
+        except URLError as e:
+            print('\nURLError is occurred. Failed to connect a server.')
+            print('Reason: ', e.reason)
+            time.sleep(15)
             crawling()
             return
   
