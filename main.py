@@ -40,16 +40,16 @@ def crawling():
                 quote_plus('type'): 'xml'
             }
         )
-
-        result = urlopen(url + queryParams)
-        
-        # This code is for debugging
-        print("Exhaust connected successfully: #" + str(stackCode[i]))
-        xmlObj = bs4.BeautifulSoup(result, 'lxml-xml')
-        data = xmlObj.find_all('item')
         
         # Added exception handling when an ConnectionError is occurred
         try:
+            result = urlopen(url + queryParams)
+            
+            # This code is for debugging
+            print("Exhaust connected successfully: #" + str(stackCode[i]))
+            xmlObj = bs4.BeautifulSoup(result, 'lxml-xml')
+            data = xmlObj.find_all('item')
+        
             for k in range(len(data)):
                 mesure_dt = data[k].mesure_dt.string.strip()
                 area_nm = data[k].area_nm.string.strip()
