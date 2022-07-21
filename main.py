@@ -30,6 +30,11 @@ def crawling():
     # Workaround: Initialize dataList
     dataList = []
     
+    print('----------------------------------------------------')
+    print('Running time: ', executeTime)
+    print('----------------------------------------------------')
+    print('Exhaust connected successfully: ')
+    
     for i in range(len(stackCode)):
         queryParams = '?' + urlencode(
             {
@@ -44,9 +49,10 @@ def crawling():
         # Fix the problem that couldn't retry to get data.
         try:
             result = urlopen(url + queryParams)
-            
-            # This code is for debugging
-            print("Exhaust connected successfully: #" + str(stackCode[i]))
+            # Only for debugging the link log for checking the connections
+            # print("Link connected successfully: ", url + queryParams)
+            print(str(stackCode[i]), end='_OK ')
+
             xmlObj = bs4.BeautifulSoup(result, 'lxml-xml')
             data = xmlObj.find_all('item')
         
@@ -108,22 +114,27 @@ def crawling():
             crawling()
             return
   
-    print("\nChecking the measure date: ", measureTime)
-    print("\nExecuted: data -> df(DataFrame)")
+    print('\n----------------------------------------------------')
+    print('Checking the measure time: ', measureTime)
+    print('----------------------------------------------------')
+    print('Executed: data -> df(DataFrame)')
 
     df = pd.DataFrame(dataList, columns=['측정시간', '지역명', '사업장명', '배출구', '암모니아_허용기준', '암모니아_측정값',
                                          '질소산화물_허용기준', '질소산화물_측정값', '황산화물_허용기준', '황산화물_측정값',
                                          '먼지_허용기준', '먼지_측정값', '불화수소_허용기준', '불화수소_측정값', '염화수소_허용기준',
                                          '염화수소_측정값', '일산화탄소_허용기준', '일산화탄소_측정값'])
 
-    print("Completed: data -> df(DataFrame)")
-    print("\nChecking: The length of df row/col: " + str(df.shape[0]) + " rows/" + str(df.shape[1]) + " cols")
-    print("Checking: The contents of df: \n", df)
+    print('Completed: data -> df(DataFrame)')
+    print('----------------------------------------------------')
+    print('Checking: The length of df row/col: ' + str(df.shape[0]) + ' rows/' + str(df.shape[1]) + ' cols')
+    print('Checking: The contents of df.head(5): \n\n', df.head(5))
 
-    fileName = str(factoryName) + " " + str(measureTime) + " " + saveTime
+    nameStructure = str(factoryName) + " " + str(measureTime) + " " + saveTime
+    fileName = filePath + nameStructure
 
-    print("\nExecuted: df(DataFrame) -> .csv")
-    df.to_csv(fileName + ".csv",
+    print('----------------------------------------------------')
+    print('Executed: df(DataFrame) -> ' + fileName + '.csv is saving')
+    df.to_csv(fileName + '.csv',
               sep=',',
               na_rep='NaN',
               float_format='%.2f',
@@ -133,19 +144,17 @@ def crawling():
               encoding='utf-8-sig',
               mode='w')
     
-    print("Completed: df(DataFrame) -> " + fileName + ".csv")
-    print("Completed: Saved successfully", str(saveTime.replace("-", ":")))
+    print('Completed: Done (time: ' + str(dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')) + ')')
 
 
 def show_rerunning_time():
-    rerunningTime = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("\nRe-Running time: " + rerunningTime)
+    rerunningTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+    print('****************************************************')
+    print("Re-running time: " + rerunningTime)
 
 
 # First running
-print("------------------------------")
-print("# AutoCrawler is starting... #")
-print("------------------------------")
+print('AutoCrawler is starting...')
 crawling()
 
 # Automation - to set time to re-run
