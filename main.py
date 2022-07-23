@@ -89,7 +89,7 @@ def crawling():
         # HTTPError should be declared at first.
         except HTTPError as e:
             print('error code: ', e.code)
-            print(e, '\nConnectionError is occurred. It will be restarted soon.')
+            print(e, '\nHTTPError is occurred. It will be restarted soon.')
             time.sleep(15)
             crawling()
             return
