@@ -39,7 +39,7 @@ def crawling():
     for i in range(len(stackCode)):
         queryParams = '?' + urlencode(
             {
-                quote_plus('ServiceKey'): api_key,
+                quote_plus('serviceKey'): api_key,
                 quote_plus('areaNm'): '전라남도',
                 quote_plus('factManageNm'): '㈜포스코%20광양제철소',
                 quote_plus('stackCode'): str(stackCode[i]),
