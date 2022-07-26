@@ -39,7 +39,7 @@ def crawling():
         queryParams = '?' + urlencode(
             {
                 quote_plus('serviceKey'): api_key,
-                quote_plus('areaNm'): '노원',
+                quote_plus('areaNm'): '서울특별시',
                 quote_plus('factManageNm'): '노원자원회수시설',
                 quote_plus('stackCode'): str(stackCode[i]),
                 quote_plus('type'): 'xml'
