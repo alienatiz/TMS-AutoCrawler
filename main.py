@@ -15,8 +15,7 @@ todayDate = ""
 filePath = "./TMS_data"
 factoryName = ""
 measureTime = ""
-stackCode = ['1', '123', '132', '15', '153', '154', '155', '156', '16', '17', '18', '2', '20', '24', '25',
-             '26', '27', '28', '29', '3', '30', '31', '32', '45', '47', '49', '51', '52', '53', '54', '92', '93']
+stackCode = ['1']
 
 
 # Feature: Crawling
@@ -40,8 +39,8 @@ def crawling():
         queryParams = '?' + urlencode(
             {
                 quote_plus('serviceKey'): api_key,
-                quote_plus('areaNm'): '전라남도',
-                quote_plus('factManageNm'): '㈜포스코%20광양제철소',
+                quote_plus('areaNm'): '노원',
+                quote_plus('factManageNm'): '노원자원회수시설',
                 quote_plus('stackCode'): str(stackCode[i]),
                 quote_plus('type'): 'xml'
             }
