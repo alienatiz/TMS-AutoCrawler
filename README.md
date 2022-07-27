@@ -3,7 +3,14 @@ Python bot for crawling data from TMS OpenAPI of Cleansys automatically. You can
 
 ## Data crawled
 [![Cleansys](https://cleansys.or.kr/images/common/logo.png)](https://cleansys.or.kr/)   
-Also you can check example data here, [Example data](https://github.com/alienatiz/TMS_AutoCrawler/tree/main/data)
+Also you can check example in [/data](https://github.com/alienatiz/TMS_AutoCrawler/tree/main/data).
+
+## Autostart with BAT/VBS
+* You can modify the example files from [/bat](https://github.com/alienatiz/TMS-AutoCrawler/tree/main/bat).
+* **~.bat**: You must check the path where the **python.exe** or **pythonw.exe** is located and its source code, replace its path.
+* **~.vbs**: You must check the path where the **~.bat**(batch executable file) is located and replace its path.
+* When all the modifications are done, just run the **~.vbs file once**. It's done!
+* To check if it's running in the background, you can see process named as **"Python" in the Background Processes tab in the Task Manager**.
 
 ## Libraries MUST needed for crawling data by OpenAPI are below
 * urllib
