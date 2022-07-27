@@ -153,19 +153,23 @@ def show_rerunning_time():
     print("Re-running time: " + rerunningTime)
 
 
-# First running
-print('AutoCrawler is starting...')
-crawling()
-
-# Automation - to set time to re-run
-# 15 minutes every hour
-schedule.every().hour.at(":15").do(show_rerunning_time)
-schedule.every().hour.at(":15").do(crawling)
-
-# 45 minutes every hour
-schedule.every().hour.at(":45").do(show_rerunning_time)
-schedule.every().hour.at(":45").do(crawling)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# To run this code as a batch file(.bat) on Windows, you need to configure this syntax as below.
+if __name__ == '__main__':
+    
+    # First running
+    print('AutoCrawler is starting...')
+    crawling()
+    
+    # Automation - to set time to re-run
+    # 15 minutes every hour
+    schedule.every().hour.at(":15").do(show_rerunning_time)
+    schedule.every().hour.at(":15").do(crawling)
+    
+    # 45 minutes every hour
+    schedule.every().hour.at(":45").do(show_rerunning_time)
+    schedule.every().hour.at(":45").do(crawling)
+    
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+    
