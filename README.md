@@ -1,6 +1,6 @@
 # TMS-AutoCrawler
 [![Cleansys](https://cleansys.or.kr/images/common/logo.png)](https://cleansys.or.kr/)   
-Python bot for crawling data from TMS OpenAPI of Cleansys automatically. You can set the scheduled time the bot will be started and, also change the time scheduled for bot.
+Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can set the scheduled time the bot will be started and, also change the time scheduled for bot.
 
 
 # Features
