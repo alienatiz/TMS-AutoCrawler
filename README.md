@@ -17,7 +17,28 @@ Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can
 * **~.bat**: You must check the path where the **python.exe** or **pythonw.exe** is located and its source code, replace its path.
 * **~.vbs**: You must check the path where the **~.bat**(batch executable file) is located and replace its path.
 * When all the modifications are done, just run the **~.vbs file once**. It's done!
-* To check if it's running in the background, you can see process named as **"Python" in the Background Processes tab in the Task Manager**.
+* To check if it's running in the background, you can see process named as **"Python" in the Background Processes tab in the Task Manager**.'
+
+### Linux
+* First, you make the ~.service on /etc/systemd/service.
+* Fill the contents in ~.service are below:
+
+[Unit]<br/>
+Description={service name}<br/>
+
+[Service]<br/>
+User={user name}<br/>
+WorkingDirectory={Working directory}<br/>
+ExecStart=/bin/bash -c 'cd {Project directory} && source {Your virtualenv activation} && python3 {Project script}'<br/>
+
+[Install]<br/>
+WantedBy=multi-user.target<br/>
+
+* Then, you should enable this service on systemd.
+1) systemctl daemon-reload
+2) systemctl enable ~.service
+3) systemctl start ~.service
+
 
 ## Libraries
 Libraries MUST needed for crawling data by OpenAPI are below:
@@ -27,6 +48,11 @@ Libraries MUST needed for crawling data by OpenAPI are below:
 * schedules
 * datetime
 * time
+* lxml
+
+If you run this script on Linux, you should install the libraries in below:
+* urllib3
+* schedule
 
 ## Please note
 * The crawled data contains Korean. To save this data as csv data, the **encoding format** must be set to '**utf-8-sig**'.
