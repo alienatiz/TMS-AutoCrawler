@@ -16,25 +16,34 @@ filePath = "./TMS_data"
 factoryName = ""
 measureTime = ""
 stackCode = ['1']
+column_nm = ['mesure_dt', 'area_nm', 'fact_manage_nm', 'stack_code', 'nh3_exhst_perm_stdr_value', 'nh3_mesure_value',
+             'nox_exhst_perm_stdr_value', 'nox_mesure_value', 'sox_exhst_perm_stdr_value', 'sox_mesure_value',
+             'tsp_exhst_perm_stdr_value', 'tsp_mesure_value', 'hf_exhst_perm_stdr_value', 'hf_mesure_value',
+             'hcl_exhst_perm_stdr_value', 'hcl_mesure_value', 'co_exhst_perm_stdr_value', 'co_mesure_value']
+
+
+# Disclaimer: Set the 'dataList' as global variable.
+# Can stack the data into dataList (type: List)
+# dataList = []
 
 
 # Feature: Crawling
-def crawling():
+def crawling ():
     global todayDate, factoryName, measureTime
     executeTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
-    saveTime = dt.datetime.now().strftime('%H-%M-%S')
-    
+
+    # Debug: Check the saveTime if you want.
+    # saveTime = dt.datetime.now().strftime('%H-%M-%S')
+
     # Problem: When DataFrame is saved to .csv file, the next list was appended at previous list. 
     # Then .csv file has the bigger file size.
     # 
     # Workaround: Initialize dataList
     dataList = []
-    
-    print('----------------------------------------------------')
+
     print('Running time: ', executeTime)
-    print('----------------------------------------------------')
     print('Exhaust connected successfully: ')
-    
+
     for i in range(len(stackCode)):
         queryParams = '?' + urlencode(
             {
@@ -45,7 +54,7 @@ def crawling():
                 quote_plus('type'): 'xml'
             }
         )
-        
+
         # Fix the problem that couldn't retry to get data.
         try:
             result = urlopen(url + queryParams)
@@ -55,7 +64,7 @@ def crawling():
 
             xmlObj = bs4.BeautifulSoup(result, 'lxml-xml')
             data = xmlObj.find_all('item')
-        
+
             for k in range(len(data)):
                 mesure_dt = data[k].mesure_dt.string.strip()
                 area_nm = data[k].area_nm.string.strip()
@@ -84,7 +93,6 @@ def crawling():
                 factoryName = fact_manage_nm
                 dataList.append(data)
 
-                
         # HTTPError should be declared at first.
         except HTTPError as e:
             print('error code: ', e.code)
@@ -113,27 +121,25 @@ def crawling():
             time.sleep(15)
             crawling()
             return
-  
-    print('\n----------------------------------------------------')
+
+    # Debug: Check the measure time and generate the pandas.DataFrame
     print('Checking the measure time: ', measureTime)
-    print('----------------------------------------------------')
-    print('Executed: data -> df(DataFrame)')
+    print('Executed: data -> df')
 
-    df = pd.DataFrame(dataList, columns=['측정시간', '지역명', '사업장명', '배출구', '암모니아_허용기준', '암모니아_측정값',
-                                         '질소산화물_허용기준', '질소산화물_측정값', '황산화물_허용기준', '황산화물_측정값',
-                                         '먼지_허용기준', '먼지_측정값', '불화수소_허용기준', '불화수소_측정값', '염화수소_허용기준',
-                                         '염화수소_측정값', '일산화탄소_허용기준', '일산화탄소_측정값'])
+    df = pd.DataFrame(dataList, columns=column_nm)
 
-    print('Completed: data -> df(DataFrame)')
-    print('----------------------------------------------------')
+    # Debug: Check the length and shape of this dataframe.
     print('Checking: The length of df row/col: ' + str(df.shape[0]) + ' rows/' + str(df.shape[1]) + ' cols')
     print('Checking: The contents of df.head(5): \n\n', df.head(5))
 
-    nameStructure = str(factoryName) + " " + str(measureTime) + " " + saveTime
+    # Debug: Check the saveTime if you want.
+    # nameStructure = str(factoryName) + ' ' + str(measureTime) + '_' + saveTime
+    nameStructure = str(factoryName) + ' ' + str(measureTime) + ''
     fileName = filePath + nameStructure
 
-    print('----------------------------------------------------')
-    print('Executed: df(DataFrame) -> ' + fileName + '.csv is saving')
+    # Save: The dataframe is saved to .csv file.
+    # If you run this script on Linux, change line_terminator to lineterminator.
+    # In Linux OS, line_terminator is deprecated.
     df.to_csv(fileName + '.csv',
               sep=',',
               na_rep='NaN',
@@ -143,33 +149,33 @@ def crawling():
               line_terminator="\n",
               encoding='utf-8-sig',
               mode='w')
-    
+
+    # Debug: Check the save time.
     print('Completed: Done (time: ' + str(dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')) + ')')
 
 
 def show_rerunning_time():
     rerunningTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
-    print('****************************************************')
     print("Re-running time: " + rerunningTime)
 
 
 # To run this code as a batch file(.bat) on Windows, you need to configure this syntax as below.
 if __name__ == '__main__':
-    
+
     # First running
     print('AutoCrawler is starting...')
     crawling()
-    
-    # Automation - to set time to re-run
+
+    # Automation - to set time to re-run this script.
+    # You can change the time you want.
     # 15 minutes every hour
     schedule.every().hour.at(":15").do(show_rerunning_time)
     schedule.every().hour.at(":15").do(crawling)
-    
+
     # 45 minutes every hour
     schedule.every().hour.at(":45").do(show_rerunning_time)
     schedule.every().hour.at(":45").do(crawling)
-    
+
     while True:
         schedule.run_pending()
         time.sleep(1)
-    
