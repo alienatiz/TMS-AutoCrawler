@@ -9,13 +9,14 @@ import pandas as pd
 import schedule
 
 # Defualt variables
-url = "http://apis.data.go.kr/B552584/cleansys/rltmMesureResult"
-api_key = unquote('')
-todayDate = ""
-filePath = "./TMS_data"
-factoryName = ""
-measureTime = ""
-stackCode = ['1']
+url = 'http://apis.data.go.kr/B552584/cleansys/rltmMesureResult'
+api_key = unquote('your_apk_key')
+todayDate = ''
+file_path = './data/'
+factoryName = ''
+measureTime = ''
+area_code = 'nowon' + '_'
+stackCode = ['1', '2']
 column_nm = ['mesure_dt', 'area_nm', 'fact_manage_nm', 'stack_code', 'nh3_exhst_perm_stdr_value', 'nh3_mesure_value',
              'nox_exhst_perm_stdr_value', 'nox_mesure_value', 'sox_exhst_perm_stdr_value', 'sox_mesure_value',
              'tsp_exhst_perm_stdr_value', 'tsp_mesure_value', 'hf_exhst_perm_stdr_value', 'hf_mesure_value',
@@ -30,10 +31,13 @@ column_nm = ['mesure_dt', 'area_nm', 'fact_manage_nm', 'stack_code', 'nh3_exhst_
 # Feature: Crawling
 def crawling ():
     global todayDate, factoryName, measureTime
+    str_mesure_dt = ''
     executeTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
-
-    # Debug: Check the saveTime if you want.
-    # saveTime = dt.datetime.now().strftime('%H-%M-%S')
+    column_nm = ['mesure_dt', 'area_nm', 'fact_manage_nm', 'stack_code',
+                 'nh3_exhst_perm_stdr_value', 'nh3_mesure_value', 'nox_exhst_perm_stdr_value', 'nox_mesure_value',
+                 'sox_exhst_perm_stdr_value', 'sox_mesure_value', 'tsp_exhst_perm_stdr_value', 'tsp_mesure_value',
+                 'hf_exhst_perm_stdr_value', 'hf_mesure_value', 'hcl_exhst_perm_stdr_value', 'hcl_mesure_value',
+                 'co_exhst_perm_stdr_value', 'co_mesure_value']
 
     # Problem: When DataFrame is saved to .csv file, the next list was appended at previous list. 
     # Then .csv file has the bigger file size.
@@ -90,6 +94,7 @@ def crawling ():
                         tsp_exhst_perm_stdr_value, tsp_mesure_value, hf_exhst_perm_stdr_value, hf_mesure_value,
                         hcl_exhst_perm_stdr_value, hcl_mesure_value, co_exhst_perm_stdr_value, co_mesure_value]
                 measureTime = mesure_dt.replace(":", "-")
+                str_mesure_dt = str(mesure_dt)
                 factoryName = fact_manage_nm
                 dataList.append(data)
 
@@ -123,38 +128,45 @@ def crawling ():
             return
 
     # Debug: Check the measure time and generate the pandas.DataFrame
-    print('Checking the measure time: ', measureTime)
-    print('Executed: data -> df')
+    print('mesure_dt: ', measureTime)
 
-    df = pd.DataFrame(dataList, columns=column_nm)
+    # Set the file_name
+    nm_Struct = area_code + str_mesure_dt[0:10]
+    file_nm = file_path + nm_Struct
 
-    # Debug: Check the length and shape of this dataframe.
-    print('Checking: The length of df row/col: ' + str(df.shape[0]) + ' rows/' + str(df.shape[1]) + ' cols')
-    print('Checking: The contents of df.head(5): \n\n', df.head(5))
+    print('The data is saving now.')
+    # Save the data (collected by daily)
+    if str(dataList[0][0][11:16]) == '0:00':
 
-    # Debug: Check the saveTime if you want.
-    # nameStructure = str(factoryName) + ' ' + str(measureTime) + '_' + saveTime
-    nameStructure = str(factoryName) + ' ' + str(measureTime) + ''
-    fileName = filePath + nameStructure
+        # Update the .csv file before this day
+        date_obj = str_mesure_dt[0:10]
+        datetime_obj = dt.datetime.strptime(date_obj, '%Y-%m-%d')
+        yesterday_obj = datetime_obj - dt.timedelta(days=1)
+        yesterday = yesterday_obj.strftime('%Y-%m-%d')
 
-    # Save: The dataframe is saved to .csv file.
-    # If you run this script on Linux, change line_terminator to lineterminator.
-    # In Linux OS, line_terminator is deprecated.
-    df.to_csv(fileName + '.csv',
-              sep=',',
-              na_rep='NaN',
-              float_format='%.2f',
-              index=False,
-              header=True,
-              line_terminator="\n",
-              encoding='utf-8-sig',
-              mode='w')
+        old_file_nm = file_path + area_code + yesterday + '.csv'
+        update_df = pd.read_csv(old_file_nm, header=None)
+        update_df.drop_duplicates(keep='first', inplace=True)
+        update_df.to_csv(old_file_nm, encoding='utf-8-sig', index=False, header=False)
+        print('Old data is updated successfully')
 
-    # Debug: Check the save time.
-    print('Completed: Done (time: ' + str(dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')) + ')')
+        # Create the new .csv file
+        new_df = pd.DataFrame(dataList, columns=column_nm)
+        new_df.to_csv(file_nm + '.csv', sep=',', na_rep='NaN', float_format='%.2f',
+                      index=False, header=True, lineterminator='\n', encoding='utf-8-sig', mode='w')
+        print('New data is saved successfully')
+
+    else:
+        update_df = pd.DataFrame(dataList, columns=column_nm)
+        update_df.to_csv(file_nm + '.csv', sep=',', na_rep='NaN', float_format='%.2f',
+                         index=False, header=True, lineterminator='\n', encoding='utf-8-sig', mode='a')
+
+    print('Done (' + str(dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')) + ')')
+    dataList.clear()
 
 
-def show_rerunning_time():
+# This function is just for debugging process
+def show_rerunning_time ():
     rerunningTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
     print("Re-running time: " + rerunningTime)
 
@@ -169,11 +181,11 @@ if __name__ == '__main__':
     # Automation - to set time to re-run this script.
     # You can change the time you want.
     # 15 minutes every hour
-    schedule.every().hour.at(":15").do(show_rerunning_time)
+    # schedule.every().hour.at(":15").do(show_rerunning_time)
     schedule.every().hour.at(":15").do(crawling)
 
     # 45 minutes every hour
-    schedule.every().hour.at(":45").do(show_rerunning_time)
+    # schedule.every().hour.at(":45").do(show_rerunning_time)
     schedule.every().hour.at(":45").do(crawling)
 
     while True:
