@@ -7,9 +7,10 @@ Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can
 ## Crawling
 * You can check example in [/data](https://github.com/alienatiz/TMS_AutoCrawler/tree/main/data).
 
- **측정시간**           | **지역명** | **사업장명** | **배출구** | **암모니아\_허용기준** | **암모니아\_측정값** | **\.\.\.** 
+ **mesure_dt**      | **area_nm** | **fact_manage_nm** | **stack_code** | **nh3_exhst_perm_stdr_value** | **nh3_mesure_value** | **\.\.\.** 
 --------------------|---------|----------|---------|----------------|---------------|------------
- 2022\-07\-26 20:30 | 서울특별시   | 노원자원회수시설 | 1       | NaN            | NaN           | \.\.\.    
+ 2023\-01\-16 15:00 | 서울특별시   | 노원자원회수시설 | 1       | NaN            | NaN           | \.\.\.    
+ 2023\-01\-16 15:00 | 서울특별시   | 노원자원회수시설 | 2       | NaN            | NaN           | \.\.\.    
 
 ## Autostart
 ### Windows
@@ -20,8 +21,8 @@ Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can
 * To check if it's running in the background, you can see process named as **"Python" in the Background Processes tab in the Task Manager**.'
 
 ### Linux
-* First, you make the ~.service on /etc/systemd/service.
-* Fill the contents in ~.service are below:
+* First, you make the **~.service** on **/etc/systemd/service**.
+* Fill the contents in **~.service** are below:
 
 [Unit]<br/>
 Description={service name}<br/>
@@ -34,7 +35,7 @@ ExecStart=/bin/bash -c 'cd {Project directory} && source {Your virtualenv activa
 [Install]<br/>
 WantedBy=multi-user.target<br/>
 
-* Then, you should enable this service on systemd.
+* Then, you should enable this service on **systemd**.
 1) systemctl daemon-reload
 2) systemctl enable ~.service
 3) systemctl start ~.service
@@ -42,17 +43,13 @@ WantedBy=multi-user.target<br/>
 
 ## Libraries
 Libraries MUST needed for crawling data by OpenAPI are below:
-* urllib
+* urllib3
 * bs4
 * pandas
-* schedules
+* schedule
 * datetime
 * time
 * lxml
-
-If you run this script on Linux, you should install the libraries in below:
-* urllib3
-* schedule
 
 ## Please note
 * The crawled data contains Korean. To save this data as csv data, the **encoding format** must be set to '**utf-8-sig**'.
