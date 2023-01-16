@@ -17,11 +17,7 @@ factoryName = ''
 measureTime = ''
 area_code = 'nowon' + '_'
 stackCode = ['1', '2']
-column_nm = ['mesure_dt', 'area_nm', 'fact_manage_nm', 'stack_code', 'nh3_exhst_perm_stdr_value', 'nh3_mesure_value',
-             'nox_exhst_perm_stdr_value', 'nox_mesure_value', 'sox_exhst_perm_stdr_value', 'sox_mesure_value',
-             'tsp_exhst_perm_stdr_value', 'tsp_mesure_value', 'hf_exhst_perm_stdr_value', 'hf_mesure_value',
-             'hcl_exhst_perm_stdr_value', 'hcl_mesure_value', 'co_exhst_perm_stdr_value', 'co_mesure_value']
-
+str_dt = dt.datetime.now().strftime('%Y-%m-%d')
 
 # Disclaimer: Set the 'dataList' as global variable.
 # Can stack the data into dataList (type: List)
@@ -135,26 +131,14 @@ def crawling ():
     file_nm = file_path + nm_Struct
 
     print('The data is saving now.')
-    # Save the data (collected by daily)
+
+    # Save the data (changed daily)
     if str(dataList[0][0][11:16]) == '0:00':
-
-        # Update the .csv file before this day
-        date_obj = str_mesure_dt[0:10]
-        datetime_obj = dt.datetime.strptime(date_obj, '%Y-%m-%d')
-        yesterday_obj = datetime_obj - dt.timedelta(days=1)
-        yesterday = yesterday_obj.strftime('%Y-%m-%d')
-
-        old_file_nm = file_path + area_code + yesterday + '.csv'
-        update_df = pd.read_csv(old_file_nm, header=None)
-        update_df.drop_duplicates(keep='first', inplace=True)
-        update_df.to_csv(old_file_nm, encoding='utf-8-sig', index=False, header=False)
-        print('Old data is updated successfully')
 
         # Create the new .csv file
         new_df = pd.DataFrame(dataList, columns=column_nm)
         new_df.to_csv(file_nm + '.csv', sep=',', na_rep='NaN', float_format='%.2f',
                       index=False, header=True, lineterminator='\n', encoding='utf-8-sig', mode='w')
-        print('New data is saved successfully')
 
     else:
         update_df = pd.DataFrame(dataList, columns=column_nm)
@@ -171,7 +155,26 @@ def show_rerunning_time ():
     print("Re-running time: " + rerunningTime)
 
 
-# To run this code as a batch file(.bat) on Windows, you need to configure this syntax as below.
+# Updating the original .csv file
+def updating ():
+    date_obj = str_dt
+    datetime_obj = dt.datetime.strptime(date_obj, '%Y-%m-%d')
+    yesterday_obj = datetime_obj - dt.timedelta(days=1)
+    yesterday = yesterday_obj.strftime('%Y-%m-%d')
+
+    old_file_nm = file_path + 'simpac_ph_' + str(yesterday) + '.csv'
+    update_df = pd.read_csv(old_file_nm, header=None)
+    boolean = update_df.index.is_unique
+
+    if boolean is True:
+        update_df.drop_duplicates(keep='first', inplace=True)
+        update_df.to_csv(old_file_nm, encoding='utf-8-sig', index=False, header=False, mode='w')
+
+    else:
+        pass
+
+
+# To run this code as a process on Windows/Linux, you need to configure this syntax as below.
 if __name__ == '__main__':
 
     # First running
@@ -187,6 +190,9 @@ if __name__ == '__main__':
     # 45 minutes every hour
     # schedule.every().hour.at(":45").do(show_rerunning_time)
     schedule.every().hour.at(":45").do(crawling)
+
+    # Update .csv file at 01:46
+    schedule.every().day.at("01:46").do(updating)
 
     while True:
         schedule.run_pending()
