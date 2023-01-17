@@ -25,7 +25,7 @@ str_dt = dt.datetime.now().strftime('%Y-%m-%d')
 
 
 # Feature: Crawling
-def crawling ():
+def crawling():
     global todayDate, factoryName, measureTime
     str_mesure_dt = ''
     executeTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
@@ -150,13 +150,13 @@ def crawling ():
 
 
 # This function is just for debugging process
-def show_rerunning_time ():
+def show_rerunning_time():
     rerunningTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
     print("Re-running time: " + rerunningTime)
 
 
 # Updating the original .csv file
-def updating ():
+def updating():
     date_obj = str_dt
     datetime_obj = dt.datetime.strptime(date_obj, '%Y-%m-%d')
     yesterday_obj = datetime_obj - dt.timedelta(days=1)
