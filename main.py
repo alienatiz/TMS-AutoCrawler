@@ -10,7 +10,7 @@ import schedule
 
 # Defualt variables
 url = 'http://apis.data.go.kr/B552584/cleansys/rltmMesureResult'
-api_key = unquote('your_apk_key')
+api_key = unquote('your_api_key')
 todayDate = ''
 file_path = './data/'
 factoryName = ''
@@ -162,7 +162,7 @@ def updating():
     yesterday_obj = datetime_obj - dt.timedelta(days=1)
     yesterday = yesterday_obj.strftime('%Y-%m-%d')
 
-    old_file_nm = file_path + 'simpac_ph_' + str(yesterday) + '.csv'
+    old_file_nm = file_path + area_code + str(yesterday) + '.csv'
     update_df = pd.read_csv(old_file_nm, header=None)
     boolean = update_df.index.is_unique
 
