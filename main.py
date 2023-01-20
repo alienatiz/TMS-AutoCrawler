@@ -164,7 +164,7 @@ def updating():
 
     old_file_nm = file_path + area_code + str(yesterday) + '.csv'
     update_df = pd.read_csv(old_file_nm, header=None)
-    boolean = update_df.index.is_unique
+    boolean = not update_df[0].is_unique
 
     if boolean is True:
         update_df.drop_duplicates(keep='first', inplace=True)
