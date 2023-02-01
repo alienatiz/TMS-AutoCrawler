@@ -8,7 +8,7 @@ str_dt = dt.datetime.now().strftime('%Y-%m-%d')
 
 
 # Updating the original .csv file
-def updating():
+def preprocess():
     date_obj = str_dt
     datetime_obj = dt.datetime.strptime(date_obj, '%Y-%m-%d')
     yesterday_obj = datetime_obj - dt.timedelta(days=1)

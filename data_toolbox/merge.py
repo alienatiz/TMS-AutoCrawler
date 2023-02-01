@@ -3,7 +3,7 @@ import glob
 import os
 
 
-def merging():
+def merge():
     data_obj = str(dt.datetime.now().strftime('%Y-%m-%d')) + '.csv'
     input_path = r'./nowon/tms/'
     o_path = r'./nowon/tms/merged/'
@@ -40,4 +40,4 @@ def merging():
 
 
 if __name__ == '__main__':
-    merging()
+    merge()
