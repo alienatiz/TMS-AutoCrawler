@@ -155,25 +155,6 @@ def show_rerunning_time():
     print("Re-running time: " + rerunningTime)
 
 
-# Updating the original .csv file
-def updating():
-    date_obj = str_dt
-    datetime_obj = dt.datetime.strptime(date_obj, '%Y-%m-%d')
-    yesterday_obj = datetime_obj - dt.timedelta(days=1)
-    yesterday = yesterday_obj.strftime('%Y-%m-%d')
-
-    old_file_nm = file_path + area_code + str(yesterday) + '.csv'
-    update_df = pd.read_csv(old_file_nm, header=None)
-    boolean = not update_df[0].is_unique
-
-    if boolean is True:
-        update_df.drop_duplicates(keep='first', inplace=True)
-        update_df.to_csv(old_file_nm, encoding='utf-8-sig', index=False, header=False, mode='w')
-
-    else:
-        pass
-
-
 # To run this code as a process on Windows/Linux, you need to configure this syntax as below.
 if __name__ == '__main__':
 
@@ -190,9 +171,6 @@ if __name__ == '__main__':
     # 45 minutes every hour
     # schedule.every().hour.at(":45").do(show_rerunning_time)
     schedule.every().hour.at(":45").do(crawling)
-
-    # Update .csv file at 01:46
-    schedule.every().day.at("01:46").do(updating)
 
     while True:
         schedule.run_pending()
