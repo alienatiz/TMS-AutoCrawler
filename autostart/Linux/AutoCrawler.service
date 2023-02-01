@@ -1,0 +1,10 @@
+[Unit]
+Description=AutoCrawler
+
+[Service]
+User=user
+WorkingDirectory=/home/user/TMS-AutoCrawler
+ExecStart=/bin/bash -c 'cd /home/user/TMS-AutoCrawler/ && source /home/user/venv_env/bin/activate && python3 /home/user/TMS-AutoCrawler/main.py'
+
+[Install]
+WantedBy=multi-user.target
