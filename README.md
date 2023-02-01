@@ -22,19 +22,7 @@ Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can
 
 ### Linux
 * First, you make the **~.service** on **/etc/systemd/service**.
-* Fill the contents in **~.service** are below:
-
-[Unit]<br/>
-Description={service name}<br/>
-
-[Service]<br/>
-User={user name}<br/>
-WorkingDirectory={Working directory}<br/>
-ExecStart=/bin/bash -c 'cd {Project directory} && source {Your virtualenv activation} && python3 {Project script}'<br/>
-
-[Install]<br/>
-WantedBy=multi-user.target<br/>
-
+* Fill the contents in **~.service** matched your environment.
 * Then, you should enable this service on **systemd**.
 1) systemctl daemon-reload
 2) systemctl enable ~.service
