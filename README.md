@@ -42,14 +42,8 @@ WantedBy=multi-user.target<br/>
 
 
 ## Libraries
-Libraries MUST needed for crawling data by OpenAPI are below:
-* urllib3
-* bs4
-* pandas
-* schedule
-* datetime
-* time
-* lxml
+Libraries MUST needed for crawling data by OpenAPI are explained in requirements.txt.  <br />
+Check them here. > [requirements.txt](https://github.com/alienatiz/TMS-AutoCrawler/blob/main/requirements.txt)
 
 ## Please note
 * The crawled data contains Korean. To save this data as csv data, the **encoding format** must be set to '**utf-8-sig**'.
