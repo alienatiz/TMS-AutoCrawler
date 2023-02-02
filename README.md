@@ -1,36 +1,28 @@
 # TMS-AutoCrawler
-[![Cleansys](https://cleansys.or.kr/images/common/logo.png)](https://cleansys.or.kr/)   
+[![CleanSYS](https://cleansys.or.kr/images/common/logo.png)](https://cleansys.or.kr/)   
 Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can set the scheduled time the bot will be started and, also change the time scheduled for bot.
 
 
-# Features
-## Crawling
+## Features: Crawling data automatically
 * You can check example in [/data](https://github.com/alienatiz/TMS_AutoCrawler/tree/main/data).
 
- **mesure_dt**      | **area_nm** | **fact_manage_nm** | **stack_code** | **nh3_exhst_perm_stdr_value** | **nh3_mesure_value** | **\.\.\.** 
---------------------|---------|----------|---------|----------------|---------------|------------
- 2023\-01\-16 15:00 | 서울특별시   | 노원자원회수시설 | 1       | NaN            | NaN           | \.\.\.    
- 2023\-01\-16 15:00 | 서울특별시   | 노원자원회수시설 | 2       | NaN            | NaN           | \.\.\.    
+| **mesure_dt**      | **area_nm** | **fact_manage_nm** | **stack_code** | **nh3_exhst_perm_stdr_value** | **nh3_mesure_value** | **\.\.\.** |
+|--------------------|-------------|--------------------|----------------|-------------------------------|----------------------|------------|
+| 2023\-01\-16 15:00 | 서울특별시       | 노원자원회수시설           | 1              | NaN                           | NaN                  | \.\.\.     |
+| 2023\-01\-16 15:00 | 서울특별시       | 노원자원회수시설           | 2              | NaN                           | NaN                  | \.\.\.     |
 
-## Autostart
-### Windows
-* You can modify the example files from [/autostart/Windows](https://github.com/alienatiz/TMS-AutoCrawler/tree/main/autostart/Windows).
-* **~.bat**: You must check the path where the **python.exe** or **pythonw.exe** is located and its source code, replace its path.
-* **~.vbs**: You must check the path where the **~.bat**(batch executable file) is located and replace its path.
-* When all the modifications are done, just run the **~.vbs file once**. It's done!
-* To check if it's running in the background, you can see process named as **"Python" in the Background Processes tab in the Task Manager**.'
+## Getting Started
+1) Download this code in your directory.
+2) Write the auto starting script matched by your environment. Check [autostart.md](https://github.com/alienatiz/TMS-AutoCrawler/tree/main/autostart/autostart.md)
+3) Run the script in background on your system.
+4) Check the data collected by script.
 
-### Linux
-* First, you make the **~.service** on **/etc/systemd/service**.
-* Fill the contents in **~.service** matched your environment.
-* Then, you should enable this service on **systemd**.
-1) systemctl daemon-reload
-2) systemctl enable ~.service
-3) systemctl start ~.service
-
+```git
+git clone git@github.com:alienatiz/TMS-AutoCrawler.git
+```
 
 ## Libraries
-Libraries MUST needed for crawling data by OpenAPI are explained in requirements.txt.  <br />
+Libraries MUST be needed for crawling data by OpenAPI are explained in requirements.txt.  <br />
 Check them here. > [requirements.txt](https://github.com/alienatiz/TMS-AutoCrawler/blob/main/requirements.txt)
 
 ## Please note
