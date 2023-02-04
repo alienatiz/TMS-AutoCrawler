@@ -2,14 +2,14 @@ import datetime as dt
 
 import pandas as pd
 
+# Set the default variables
 file_path = './data/'
 area_code = 'nowon' + '_'
-str_dt = dt.datetime.now().strftime('%Y-%m-%d')
 
 
 # Updating the original .csv file
 def preprocess():
-    date_obj = str_dt
+    date_obj = dt.datetime.now().strftime('%Y-%m-%d')
     datetime_obj = dt.datetime.strptime(date_obj, '%Y-%m-%d')
     yesterday_obj = datetime_obj - dt.timedelta(days=1)
     yesterday = yesterday_obj.strftime('%Y-%m-%d')
