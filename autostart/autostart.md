@@ -7,9 +7,19 @@
 * To check if it's running in the background, you can see process named as **"Python" in the Background Processes tab in the Task Manager**.'
 
 ### Linux
-* First, you make the **~.service** on **/etc/systemd/service**.
-* Fill the contents in **~.service** matched your environment.
-* Then, you should enable this service on **systemd**.
-1. systemctl daemon-reload
-2. systemctl enable ~.service
-3. systemctl start ~.service
+1. Move the **~.service** to **/etc/systemd/service**.
+```
+sudo mv ./Linux/AutoCrawler.service /etc/systemd/service
+```
+
+2. Fill the contents in **~.service** matched your environment.
+```
+sudo nano /etc/systmd/service/AutoCrawler.service
+```
+
+4. Then, you should enable this service on **systemd**.
+```
+systemctl daemon-reload
+systemctl enable AutoCrawler.service
+systemctl start AutoCrawler.service
+```
