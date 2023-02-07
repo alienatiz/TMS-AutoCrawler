@@ -4,7 +4,7 @@ Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can
 
 
 ## Features: Crawling data automatically
-* You can check example in [/data](https://github.com/alienatiz/TMS_AutoCrawler/tree/main/data).
+* You can check example in [/data](https://github.com/alienatiz/TMS_AutoCrawler/tree/release/data).
 
 | **mesure_dt**      | **area_nm** | **fact_manage_nm** | **stack_code** | **nh3_exhst_perm_stdr_value** | **nh3_mesure_value** | **\.\.\.** |
 |--------------------|-------------|--------------------|----------------|-------------------------------|----------------------|------------|
@@ -13,7 +13,7 @@ Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can
 
 ## Getting Started
 1) Download this code in your directory.
-2) Write the auto starting script matched by your environment. Check [autostart.md](https://github.com/alienatiz/TMS-AutoCrawler/tree/main/autostart/autostart.md)
+2) Write the auto starting script matched by your environment. Check [autostart.md](https://github.com/alienatiz/TMS-AutoCrawler/tree/release/autostart/autostart.md)
 3) Run the script in background on your system.
 4) Check the data collected by script.
 
@@ -23,7 +23,7 @@ git clone git@github.com:alienatiz/TMS-AutoCrawler.git
 
 ## Libraries
 Libraries MUST be needed for crawling data by OpenAPI are explained in requirements.txt.  <br />
-Check them here. > [requirements.txt](https://github.com/alienatiz/TMS-AutoCrawler/blob/main/requirements.txt)
+Check them here. > [requirements.txt](https://github.com/alienatiz/TMS-AutoCrawler/blob/release/requirements.txt)
 
 ## Please note
 * The crawled data contains Korean. To save this data as csv data, the **encoding format** must be set to '**utf-8-sig**'.
