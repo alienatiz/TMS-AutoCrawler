@@ -17,7 +17,7 @@ sudo mv ./Linux/AutoCrawler.service /etc/systemd/service
 sudo nano /etc/systmd/service/AutoCrawler.service
 ```
 
-4. Then, you should enable this service on **systemd**.
+3. Then, you should enable this service on **systemd**.
 ```
 systemctl daemon-reload
 systemctl enable AutoCrawler.service
