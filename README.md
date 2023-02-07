@@ -18,7 +18,7 @@ Python bot for crawling data from TMS OpenAPI of CleanSYS automatically. You can
 4) Check the data collected by script.
 
 ```git
-git clone git@github.com:alienatiz/TMS-AutoCrawler.git
+git clone git@github.com:alienatiz/TMS-AutoCrawler.git -b dev
 ```
 
 ## Libraries
