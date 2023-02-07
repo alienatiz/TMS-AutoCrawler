@@ -1,4 +1,5 @@
 import datetime as dt
+import os
 
 import pandas as pd
 
@@ -19,9 +20,13 @@ def preprocess():
     boolean = not df[0].is_unique
 
     if boolean is True:
-        update_df = pd.read_csv(old_file_nm, header=None)
-        update_df.drop_duplicates(keep='first', inplace=True)
-        update_df.to_csv(old_file_nm, encoding='utf-8-sig', index=False, header=False, mode='w')
+        if os.path.isdir(old_file_nm) is True:
+            update_df = pd.read_csv(old_file_nm, header=None)
+            update_df.drop_duplicates(keep='first', inplace=True)
+            update_df.to_csv(old_file_nm, encoding='utf-8-sig', index=False, header=False, mode='w')
+
+        else:
+            pass
 
     else:
         pass
