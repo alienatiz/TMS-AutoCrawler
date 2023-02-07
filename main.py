@@ -196,6 +196,9 @@ if __name__ == '__main__':
     # schedule.every().hour.at(":45").do(show_rerunning_time)
     schedule.every().hour.at(":45").do(crawling)
 
+    # Update .csv file on everyday
+    schedule.every(1).days.do(updating)
+
     while True:
         schedule.run_pending()
         time.sleep(1)
