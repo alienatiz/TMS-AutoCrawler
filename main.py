@@ -1,4 +1,5 @@
 import datetime as dt
+import os
 import time
 from urllib.error import URLError, HTTPError
 from urllib.parse import urlencode, quote_plus, unquote
@@ -153,6 +154,29 @@ def crawling():
 def show_rerunning_time():
     rerunningTime = dt.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
     print("Re-running time: " + rerunningTime)
+
+
+def updating():
+    date_obj = dt.datetime.now().strftime('%Y-%m-%d')
+    datetime_obj = dt.datetime.strptime(date_obj, '%Y-%m-%d')
+    yesterday_obj = datetime_obj - dt.timedelta(days=1)
+    yesterday = yesterday_obj.strftime('%Y-%m-%d')
+
+    old_file_nm = file_path + area_code + str(yesterday) + '.csv'
+    df = pd.read_csv(old_file_nm, header=None)
+    boolean = not df[0].is_unique
+
+    if boolean is True:
+        if os.path.isdir(old_file_nm) is True:
+            update_df = pd.read_csv(old_file_nm, header=None)
+            update_df.drop_duplicates(keep='first', inplace=True)
+            update_df.to_csv(old_file_nm, encoding='utf-8-sig', index=False, header=False, mode='w')
+
+        else:
+            pass
+
+    else:
+        pass
 
 
 # To run this code as a process on Windows/Linux, you need to configure this syntax as below.
